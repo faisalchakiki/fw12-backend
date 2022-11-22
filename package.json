@@ -1,0 +1,26 @@
+{
+  "name": "cinephile",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faisalchakiki/fw12-backend.git"
+  },
+  "author": "Nero",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/faisalchakiki/fw12-backend/issues"
+  },
+  "homepage": "https://github.com/faisalchakiki/fw12-backend#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
