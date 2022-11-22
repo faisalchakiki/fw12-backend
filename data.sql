@@ -27,7 +27,8 @@ CREATE TABLE "movies"(
     "created_at" TIMESTAMPTZ DEFAULT now(),
     "updated_at" TIMESTAMPTZ
 );
-INSERT INTO movies (title,poster,date_release,director,duration,synopsis) VALUES ('Sri Asih', 'sriasih.png', now(), 'George', 115,'lorem ipsum');
+SELECT * FROM movies;
+INSERT INTO movies (title,poster,date_release,director,duration,synopsis) VALUES ('Sri Asih', 'sriasih.png', '2022-11-01', 'George', 115,'lorem ipsum');
 
 
 CREATE Table "forgot_accounts"(
