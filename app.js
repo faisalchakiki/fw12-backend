@@ -1,15 +1,18 @@
+// import
 const express = require('express')
+const Router = require('./src/routes')
+const database = require('./src/helpers/db.helper')
+// deklarasikan dengan variable
 const app = express()
 const port = 8888
-
-app.use('/', ()=>{
-  require('./src/routes')
-})
+// mendaftarkan middleware ke express
+app.use(express.urlencoded({ extended: true })) //parse data
+app.use('/', Router)
 
 app.get('/', (req, res) => {
   return res.status(200).json({
     success: true,
-    massage: "Server is running well"
+    message: "HELLO WORLD"
   })
 })
 
