@@ -1,17 +1,18 @@
 const errorHandler = require('../helpers/errorHandler.helper')
 const {
   //mengimport data dari models
-  getListUsers,
-  readingUser,
-  creatingUser,
-  updatingUser,
-  deletingUser,
-} = require("../models/user.model");
+  getListCastMovie,
+  readingCastMovie,
+  creatingCastMovie,
+  updatingCastMovie,
+  deletingCastMovie,
+} = require("../models/castMovie.model");
 
 //menjalankan model
-exports.listUsers = (req, res) => {
-  getListUsers((err, datas) => {
+exports.readAllCastMovie = (req, res) => {
+  getListCastMovie((err, datas) => {
     if(err){
+      // console./log(err)
       return errorHandler(err, res)
     }
     return res.status(200).json({
@@ -22,55 +23,57 @@ exports.listUsers = (req, res) => {
   });
 };
 
-exports.getUser = (req, res) => {
-  readingUser(req.param('id'), (err, result) => {
+exports.getCastMovie = (req, res) => {
+  readingCastMovie(req.param('id'), (err, result) => {
     if (err) {
+      // console.log(err)
       return errorHandler(err, res)
       }
     return res.status(200).json({
       success: true,
-      message: "Success Get User",
+      message: "Success Get CastMovie",
       data: result.rows
     })
   })
 }
 
-exports.createUsers = (req, res) => {
-  creatingUser(req.body ,(err, result) => {
+exports.createCastMovie = (req, res) => {
+  creatingCastMovie(req.body ,(err, result) => {
     if (err) {
+    // console.log(err)
     return errorHandler(err, res) 
     }
     return res.status(200).json({
       success: true,
-      message: "Success Create User",
+      message: "Success Create CastMovie",
       results: result.rows[0],
     });
   });
 };
 
-exports.updateUsers = (req, res) => {
-  updatingUser(req.body, req.param('id'), (err, result) => {
+exports.updateCastMovie = (req, res) => {
+  updatingCastMovie(req.body, req.param('id'), (err, result) => {
     if(err){
-      console.log(err)
+      // console.log(err)
       return errorHandler(err ,res)
     }
     return res.status(200).json({
       success : true,
-      message : "Success Update User",
+      message : "Success Update CastMovie",
       results: result.rows[0]
     })
   });
 };
 
-exports.deleteUsers = (req, res) => {
-  deletingUser(req.param("id"), (err, result)=>{
-    console.log(result)
+exports.deleteCastMovie = (req, res) => {
+  deletingCastMovie(req.param("id"), (err, result)=>{
     if(err){
+      // console.log(result)
       return errorHandler(err , res)
     }
     return res.status(200).json({
       success : true,
-      message : "Delete User Success",
+      message : "Delete CastMovie Success",
       results : result.rows[0] 
     })
   });

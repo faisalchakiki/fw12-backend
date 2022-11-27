@@ -22,15 +22,23 @@ const creatingMovie = (data, cb) => {
 
 // mengupdate data movie---
 const updatingMovie = (data, id, cb) => {
-  const sql =`UPDATE movies SET "title" = '${data.title}',
-  "poster" = '${data.poster}',
-  "dateRelease" = '${data.dateRelease}',
-  "director" = '${data.director}',
-  "duration" = '${data.duration}',
-  "synopsis" = '${data.synopsis}',
+  const sql = `UPDATE movies SET "title" = COALESCE( $1, "title"),
+  "poster" = COALESCE( $2, "poster"),
+  "dateRelease" = COALESCE( $3, "dateRelease"),
+  "director" = COALESCE( $4, "director"),
+  "duration" = COALESCE( $5, "duration"),
+  "synopsis" = COALESCE( $6, "synopsis"),
   "updatedAt" = now()
-  WHERE id = ${id} RETURNING *`
-  db.query(sql, cb)
+  WHERE id = ${id} RETURNING *`;
+  const values = [
+    data.title,
+    data.poster,
+    data.dateRelease,
+    data.director,
+    data.duration,
+    data.synopsis,
+  ];
+  db.query(sql,values, cb)
 };
 
 //mendelete movie---

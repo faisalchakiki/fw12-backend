@@ -1,17 +1,18 @@
 const errorHandler = require('../helpers/errorHandler.helper')
 const {
   //mengimport data dari models
-  getListUsers,
-  readingUser,
-  creatingUser,
-  updatingUser,
-  deletingUser,
-} = require("../models/user.model");
+  getListTime,
+  readingTime,
+  creatingTime,
+  updatingTime,
+  deletingTime,
+} = require("../models/time.model");
 
 //menjalankan model
-exports.listUsers = (req, res) => {
-  getListUsers((err, datas) => {
+exports.readAllTime = (req, res) => {
+  getListTime((err, datas) => {
     if(err){
+      // console./log(err)
       return errorHandler(err, res)
     }
     return res.status(200).json({
@@ -22,55 +23,57 @@ exports.listUsers = (req, res) => {
   });
 };
 
-exports.getUser = (req, res) => {
-  readingUser(req.param('id'), (err, result) => {
+exports.getTime = (req, res) => {
+  readingTime(req.param('id'), (err, result) => {
     if (err) {
+      // console.log(err)
       return errorHandler(err, res)
       }
     return res.status(200).json({
       success: true,
-      message: "Success Get User",
+      message: "Success Get Time",
       data: result.rows
     })
   })
 }
 
-exports.createUsers = (req, res) => {
-  creatingUser(req.body ,(err, result) => {
+exports.createTime = (req, res) => {
+  creatingTime(req.body ,(err, result) => {
     if (err) {
+    // console.log(err)
     return errorHandler(err, res) 
     }
     return res.status(200).json({
       success: true,
-      message: "Success Create User",
+      message: "Success Create Time",
       results: result.rows[0],
     });
   });
 };
 
-exports.updateUsers = (req, res) => {
-  updatingUser(req.body, req.param('id'), (err, result) => {
+exports.updateTime = (req, res) => {
+  updatingTime(req.body, req.param('id'), (err, result) => {
     if(err){
-      console.log(err)
+      // console.log(err)
       return errorHandler(err ,res)
     }
     return res.status(200).json({
       success : true,
-      message : "Success Update User",
+      message : "Success Update Time",
       results: result.rows[0]
     })
   });
 };
 
-exports.deleteUsers = (req, res) => {
-  deletingUser(req.param("id"), (err, result)=>{
-    console.log(result)
+exports.deleteTime = (req, res) => {
+  deletingTime(req.param("id"), (err, result)=>{
     if(err){
+      // console.log(result)
       return errorHandler(err , res)
     }
     return res.status(200).json({
       success : true,
-      message : "Delete User Success",
+      message : "Delete Time Success",
       results : result.rows[0] 
     })
   });

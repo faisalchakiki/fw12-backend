@@ -1,17 +1,18 @@
 const errorHandler = require('../helpers/errorHandler.helper')
 const {
   //mengimport data dari models
-  getListUsers,
-  readingUser,
-  creatingUser,
-  updatingUser,
-  deletingUser,
-} = require("../models/user.model");
+  getListMovieGenre,
+  readingMovieGenre,
+  creatingMovieGenre,
+  updatingMovieGenre,
+  deletingMovieGenre,
+} = require("../models/movieGenre.model");
 
 //menjalankan model
-exports.listUsers = (req, res) => {
-  getListUsers((err, datas) => {
+exports.readAllMovieGenre = (req, res) => {
+  getListMovieGenre((err, datas) => {
     if(err){
+      // console./log(err)
       return errorHandler(err, res)
     }
     return res.status(200).json({
@@ -22,55 +23,57 @@ exports.listUsers = (req, res) => {
   });
 };
 
-exports.getUser = (req, res) => {
-  readingUser(req.param('id'), (err, result) => {
+exports.getMovieGenre = (req, res) => {
+  readingMovieGenre(req.param('id'), (err, result) => {
     if (err) {
+      // console.log(err)
       return errorHandler(err, res)
       }
     return res.status(200).json({
       success: true,
-      message: "Success Get User",
+      message: "Success Get MovieGenre",
       data: result.rows
     })
   })
 }
 
-exports.createUsers = (req, res) => {
-  creatingUser(req.body ,(err, result) => {
+exports.createMovieGenre = (req, res) => {
+  creatingMovieGenre(req.body ,(err, result) => {
     if (err) {
+    // console.log(err)
     return errorHandler(err, res) 
     }
     return res.status(200).json({
       success: true,
-      message: "Success Create User",
+      message: "Success Create MovieGenre",
       results: result.rows[0],
     });
   });
 };
 
-exports.updateUsers = (req, res) => {
-  updatingUser(req.body, req.param('id'), (err, result) => {
+exports.updateMovieGenre = (req, res) => {
+  updatingMovieGenre(req.body, req.param('id'), (err, result) => {
     if(err){
-      console.log(err)
+      // console.log(err)
       return errorHandler(err ,res)
     }
     return res.status(200).json({
       success : true,
-      message : "Success Update User",
+      message : "Success Update MovieGenre",
       results: result.rows[0]
     })
   });
 };
 
-exports.deleteUsers = (req, res) => {
-  deletingUser(req.param("id"), (err, result)=>{
-    console.log(result)
+exports.deleteMovieGenre = (req, res) => {
+  deletingMovieGenre(req.param("id"), (err, result)=>{
     if(err){
+      // console.log(result)
       return errorHandler(err , res)
     }
     return res.status(200).json({
       success : true,
-      message : "Delete User Success",
+      message : "Delete MovieGenre Success",
       results : result.rows[0] 
     })
   });

@@ -1,4 +1,5 @@
-const errorHandler = require('../helpers/errorHandler.helper')
+const errorHandler = require('../helpers/errorHandler.helper');
+const filter = require('../helpers/filter.helper');
 const {
   //mengimport data dari models
   getListCast,
@@ -6,21 +7,27 @@ const {
   creatingCast,
   updatingCast,
   deletingCast,
+  countAllCast
 } = require("../models/cast.model");
 
 //menjalankan model
 exports.readAllCast = (req, res) => {
-  getListCast((err, datas) => {
-    if(err){
-      // console./log(err)
-      return errorHandler(err, res)
-    }
-    return res.status(200).json({
-      success: true,
-      message: "Success Fetch List",
-      data: datas.rows,
+  const sortable = ['name', 'createdAll', 'updatedAt']
+  filter(req.query, sortable, countAllCast,res,(filter, pageInfo)=>{
+    getListCast(filter , (err, datas) => {
+      console.log(filter)
+      if(err){
+        console.log(err)
+        return errorHandler(err, res)
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Success Fetch List",
+        pageInfo,
+        data: datas.rows,
+      });
     });
-  });
+  })
 };
 
 exports.getCast = (req, res) => {

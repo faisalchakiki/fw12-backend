@@ -143,7 +143,7 @@ INSERT INTO schedule_time ("idTime", "idSchedule") VALUES (1 , 1);
 
 CREATE Table "bookings"(
     "id" INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    "date_booking" DATE,
+    "dateBooking" DATE,
     "idUsers" INT,
     "idMovie" INT,
     "idCinema" INT,

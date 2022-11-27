@@ -1,17 +1,18 @@
 const errorHandler = require('../helpers/errorHandler.helper')
 const {
   //mengimport data dari models
-  getListUsers,
-  readingUser,
-  creatingUser,
-  updatingUser,
-  deletingUser,
-} = require("../models/user.model");
+  getListCinema,
+  readingCinema,
+  creatingCinema,
+  updatingCinema,
+  deletingCinema,
+} = require("../models/cinema.model");
 
 //menjalankan model
-exports.listUsers = (req, res) => {
-  getListUsers((err, datas) => {
+exports.readAllCinema = (req, res) => {
+  getListCinema((err, datas) => {
     if(err){
+      // console./log(err)
       return errorHandler(err, res)
     }
     return res.status(200).json({
@@ -22,55 +23,57 @@ exports.listUsers = (req, res) => {
   });
 };
 
-exports.getUser = (req, res) => {
-  readingUser(req.param('id'), (err, result) => {
+exports.getCinema = (req, res) => {
+  readingCinema(req.param('id'), (err, result) => {
     if (err) {
+      // console.log(err)
       return errorHandler(err, res)
       }
     return res.status(200).json({
       success: true,
-      message: "Success Get User",
+      message: "Success Get Cinema",
       data: result.rows
     })
   })
 }
 
-exports.createUsers = (req, res) => {
-  creatingUser(req.body ,(err, result) => {
+exports.createCinema = (req, res) => {
+  creatingCinema(req.body ,(err, result) => {
     if (err) {
+    // console.log(err)
     return errorHandler(err, res) 
     }
     return res.status(200).json({
       success: true,
-      message: "Success Create User",
+      message: "Success Create Cinema",
       results: result.rows[0],
     });
   });
 };
 
-exports.updateUsers = (req, res) => {
-  updatingUser(req.body, req.param('id'), (err, result) => {
+exports.updateCinema = (req, res) => {
+  updatingCinema(req.body, req.param('id'), (err, result) => {
     if(err){
-      console.log(err)
+      // console.log(err)
       return errorHandler(err ,res)
     }
     return res.status(200).json({
       success : true,
-      message : "Success Update User",
+      message : "Success Update Cinema",
       results: result.rows[0]
     })
   });
 };
 
-exports.deleteUsers = (req, res) => {
-  deletingUser(req.param("id"), (err, result)=>{
-    console.log(result)
+exports.deleteCinema = (req, res) => {
+  deletingCinema(req.param("id"), (err, result)=>{
     if(err){
+      // console.log(result)
       return errorHandler(err , res)
     }
     return res.status(200).json({
       success : true,
-      message : "Delete User Success",
+      message : "Delete Cinema Success",
       results : result.rows[0] 
     })
   });

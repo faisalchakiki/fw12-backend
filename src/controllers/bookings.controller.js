@@ -1,17 +1,18 @@
 const errorHandler = require('../helpers/errorHandler.helper')
 const {
   //mengimport data dari models
-  getListUsers,
-  readingUser,
-  creatingUser,
-  updatingUser,
-  deletingUser,
-} = require("../models/user.model");
+  getListBooking,
+  readingBooking,
+  creatingBooking,
+  updatingBooking,
+  deletingBooking,
+} = require("../models/booking.model");
 
 //menjalankan model
-exports.listUsers = (req, res) => {
-  getListUsers((err, datas) => {
+exports.readAllBooking = (req, res) => {
+  getListBooking((err, datas) => {
     if(err){
+      // console.log(err)
       return errorHandler(err, res)
     }
     return res.status(200).json({
@@ -22,55 +23,57 @@ exports.listUsers = (req, res) => {
   });
 };
 
-exports.getUser = (req, res) => {
-  readingUser(req.param('id'), (err, result) => {
+exports.getBooking = (req, res) => {
+  readingBooking(req.param('id'), (err, result) => {
     if (err) {
+      // console.log(err)
       return errorHandler(err, res)
       }
     return res.status(200).json({
       success: true,
-      message: "Success Get User",
+      message: "Success Get Booking",
       data: result.rows
     })
   })
 }
 
-exports.createUsers = (req, res) => {
-  creatingUser(req.body ,(err, result) => {
+exports.createBooking = (req, res) => {
+  creatingBooking(req.body ,(err, result) => {
     if (err) {
+    console.log(err)
     return errorHandler(err, res) 
     }
     return res.status(200).json({
       success: true,
-      message: "Success Create User",
+      message: "Success Create Booking",
       results: result.rows[0],
     });
   });
 };
 
-exports.updateUsers = (req, res) => {
-  updatingUser(req.body, req.param('id'), (err, result) => {
+exports.updateBooking = (req, res) => {
+  updatingBooking(req.body, req.param('id'), (err, result) => {
     if(err){
       console.log(err)
       return errorHandler(err ,res)
     }
     return res.status(200).json({
       success : true,
-      message : "Success Update User",
+      message : "Success Update Booking",
       results: result.rows[0]
     })
   });
 };
 
-exports.deleteUsers = (req, res) => {
-  deletingUser(req.param("id"), (err, result)=>{
-    console.log(result)
+exports.deleteBooking = (req, res) => {
+  deletingBooking(req.param("id"), (err, result)=>{
     if(err){
+      // console.log(result)
       return errorHandler(err , res)
     }
     return res.status(200).json({
       success : true,
-      message : "Delete User Success",
+      message : "Delete Booking Success",
       results : result.rows[0] 
     })
   });

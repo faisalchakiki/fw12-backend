@@ -22,10 +22,13 @@ const creatingGenre = (data, cb) => {
 
 // mengupdate data Genre---
 const updatingGenre = (data, id, cb) => {
-  const sql =`UPDATE genres SET "name" = '${data.name}',
+  const sql = `UPDATE genres SET "name" = COALESCE( $1, "name"),
   "updatedAt" = now()
-  WHERE id = ${id} RETURNING *`
-  db.query(sql, cb)
+  WHERE id = ${id} RETURNING *`;
+  const values = [
+    data.name,
+  ];
+  db.query(sql,values, cb)
 };
 
 //mendelete genre---
