@@ -3,15 +3,15 @@ const db = require("../helpers/db.helper"); // import db
 //Menjalankan query
 // melihat semua users ---
 const countAllUsers = (filter, cb) => {
-  const sql = `SELECT COUNT("id") AS "totalData" FROM users WHERE "firstName" LIKE $1`
-  const values = [`%${filter.search}%`]
-  return db.query(sql, values, cb)
-}
+  const sql = `SELECT COUNT("id") AS "totalData" FROM users WHERE "firstName" LIKE $1`;
+  const values = [`%${filter.search}%`];
+  return db.query(sql, values, cb);
+};
 
 const getListUsers = (filter, cb) => {
   const sql = `SELECT * FROM users WHERE "firstName" LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
-  const values = [`%${filter.search}%`,filter.limit, filter.offset]
-  return db.query(sql,values,cb)
+  const values = [`%${filter.search}%`, filter.limit, filter.offset];
+  return db.query(sql, values, cb);
 };
 
 // melihat user berdasarkan id ---
@@ -50,7 +50,7 @@ const updatingUser = (data, id, cb) => {
     data.email,
     data.password,
   ];
-  db.query(sql,values, cb);
+  db.query(sql, values, cb);
 };
 
 //mendelete user---
@@ -59,11 +59,19 @@ const deletingUser = (id, cb) => {
   db.query(sql, cb);
 };
 
+//mengecek email di user
+const authEmailUser = (data, cb) => {
+  const sql = `SELECT * FROM users WHERE email = $1`;
+  const values = [data.email]
+  return db.query(sql,values, cb);
+};
+
 module.exports = {
   getListUsers,
   readingUser,
   creatingUser,
   updatingUser,
   deletingUser,
-  countAllUsers
+  countAllUsers,
+  authEmailUser,
 };

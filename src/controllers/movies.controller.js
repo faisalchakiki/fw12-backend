@@ -13,6 +13,7 @@ const {
 //menjalankan model
 exports.readAllMovies = (req, res) => {
   const sortable = ['title', 'createdAll', 'updatedAt']
+  console.log(req.userData)
   filter(req.query, sortable, countAllMovie,res,(filter, pageInfo)=>{
     getListMovie(filter,(err, datas) => {
       if(err){
