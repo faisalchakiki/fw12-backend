@@ -189,3 +189,71 @@ DROP TABLE subscriber;
 SELECT * FROM subscriber;
 INSERT INTO subscriber (email) VALUES ('faisal@gmail.com');
 
+
+-- RELASI
+
+ALTER Table "schedule_time"
+ADD Constraint fk_schedule_time
+FOREIGN KEY ("idTime") REFERENCES times(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER Table "schedule_time"
+ADD Constraint fk_time_movie
+FOREIGN KEY ("idSchedule") REFERENCES schedule_movie(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER Table "schedule_movie"
+ADD Constraint fk_schedule_movie
+FOREIGN KEY ("idMovies") REFERENCES movies(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER Table "schedule_movie"
+ADD Constraint fk_schedule_cinema
+FOREIGN KEY ("idCinema") REFERENCES cinemas(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER Table "reserved_seats"
+ADD Constraint fk_reserved_booking
+FOREIGN KEY ("id") REFERENCES bookings(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER Table "movie_genre"
+ADD Constraint fk_movie_genre
+FOREIGN KEY ("idMovie") REFERENCES movies(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER Table "movie_genre"
+ADD Constraint fk_genre_movie
+FOREIGN KEY ("idGenre") REFERENCES genres(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER Table "casts_movie"
+ADD Constraint fk_cast_movie
+FOREIGN KEY ("idCast") REFERENCES casts(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER Table "casts_movie"
+ADD Constraint fk_movies_cm
+FOREIGN KEY ("idMovie") REFERENCES movies(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER Table "bookings"
+ADD Constraint fk_booking_users
+FOREIGN KEY ("idUsers") REFERENCES users(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER Table "bookings"
+ADD Constraint fk_booking_movie
+FOREIGN KEY ("idMovie") REFERENCES movies(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER Table "bookings"
+ADD Constraint fk_booking_cinema
+FOREIGN KEY ("idCinema") REFERENCES cinemas(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER Table "bookings"
+ADD Constraint fk_booking_status
+FOREIGN KEY ("idStatus") REFERENCES status_booking(id)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
