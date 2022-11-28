@@ -2,9 +2,16 @@ const db = require("../helpers/db.helper"); // import db
 
 //Menjalankan query
 // melihat semua Genres ---
-const getListGenre = (cb) => {
-  const sql = "SELECT * FROM genres";
-  return db.query(sql,cb)
+const countAllGenre = (filter, cb) => {
+  const sql = `SELECT COUNT("name") AS "totalData" FROM genres WHERE name LIKE $1`
+  const values = [`%${filter.search}%`]
+  return db.query(sql, values, cb)
+}
+
+const getListGenre = (filter,cb) => {
+  const sql = `SELECT * FROM genres  WHERE name LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const values = [`%${filter.search}%`,filter.limit, filter.offset]
+  return db.query(sql,values,cb)
 };
 
 // melihat Genre berdasarkan id ---
@@ -43,4 +50,5 @@ module.exports = {
   creatingGenre,
   updatingGenre,
   deletingGenre,
+  countAllGenre
 };

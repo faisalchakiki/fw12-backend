@@ -1,4 +1,5 @@
-const errorHandler = require('../helpers/errorHandler.helper')
+const errorHandler = require('../helpers/errorHandler.helper');
+const filter = require('../helpers/filter.helper');
 const {
   //mengimport data dari models
   getListUsers,
@@ -6,20 +7,25 @@ const {
   creatingUser,
   updatingUser,
   deletingUser,
+  countAllUsers,
 } = require("../models/user.model");
 
 //menjalankan model
 exports.listUsers = (req, res) => {
-  getListUsers((err, datas) => {
+  const sortable = ['firstName', 'createdAll', 'updatedAt']
+  filter(req.query, sortable, countAllUsers,res,(filter, pageInfo)=>{
+  getListUsers(filter,(err, datas) => {
     if(err){
       return errorHandler(err, res)
     }
     return res.status(200).json({
       success: true,
       message: "Success Fetch List",
+      pageInfo,
       data: datas.rows,
     });
   });
+})
 };
 
 exports.getUser = (req, res) => {
@@ -73,5 +79,5 @@ exports.deleteUsers = (req, res) => {
       message : "Delete User Success",
       results : result.rows[0] 
     })
-  });
+  })
 };

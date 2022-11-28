@@ -1,4 +1,5 @@
 const errorHandler = require("../helpers/errorHandler.helper");
+const filter = require("../helpers/filter.helper");
 const {
   //mengimport data dari models
   getListSubscriber,
@@ -6,21 +7,26 @@ const {
   creatingSubscriber,
   updatingSubscriber,
   deletingSubscriber,
+  countAllSubscriber,
 } = require("../models/subscriber.model");
 
 //menjalankan model
 exports.readAllSubscriber = (req, res) => {
-  getListSubscriber((err, datas) => {
-    if (err) {
-      // console./log(err)
-      return errorHandler(err, res);
-    }
-    return res.status(200).json({
-      success: true,
-      message: "Success Fetch List",
-      data: datas.rows,
+  const sortable = ['email', 'createdAll', 'updatedAt']
+  filter(req.query, sortable, countAllSubscriber,res,(filter, pageInfo)=>{
+    getListSubscriber(filter,(err, datas) => {
+      if (err) {
+        // console./log(err)
+        return errorHandler(err, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Success Fetch List",
+        pageInfo,
+        data: datas.rows,
+      });
     });
-  });
+  })
 };
 
 exports.getSubscriber = (req, res) => {

@@ -1,3 +1,5 @@
+const errorHandler = require("./errorHandler.helper")
+
 const filter = (data,sortable,countModel,res,cb ) => {
   data.page = parseInt(data.page) || 1
   data.limit = parseInt(data.limit) || 5
@@ -19,6 +21,7 @@ const filter = (data,sortable,countModel,res,cb ) => {
 
   countModel(params, (err, result) =>{
     if(err){
+      console.log(err)
       return errorHandler(err, res)
     }
     pageInfo.totalData = parseInt(result.rows[0].totalData)

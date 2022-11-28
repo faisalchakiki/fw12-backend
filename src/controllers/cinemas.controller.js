@@ -1,4 +1,5 @@
-const errorHandler = require('../helpers/errorHandler.helper')
+const errorHandler = require('../helpers/errorHandler.helper');
+const filter = require('../helpers/filter.helper');
 const {
   //mengimport data dari models
   getListCinema,
@@ -6,21 +7,26 @@ const {
   creatingCinema,
   updatingCinema,
   deletingCinema,
+  countAllCinema,
 } = require("../models/cinema.model");
 
 //menjalankan model
 exports.readAllCinema = (req, res) => {
-  getListCinema((err, datas) => {
-    if(err){
-      // console./log(err)
-      return errorHandler(err, res)
-    }
-    return res.status(200).json({
-      success: true,
-      message: "Success Fetch List",
-      data: datas.rows,
+  const sortable = ['name', 'createdAll', 'updatedAt']
+  filter(req.query, sortable, countAllCinema,res,(filter, pageInfo)=>{
+    getListCinema(filter ,(err, datas) => {
+      if(err){
+        // console./log(err)
+        return errorHandler(err, res)
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Success Fetch List",
+        pageInfo,
+        data: datas.rows,
+      });
     });
-  });
+  })
 };
 
 exports.getCinema = (req, res) => {

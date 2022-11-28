@@ -15,9 +15,9 @@ exports.readAllCast = (req, res) => {
   const sortable = ['name', 'createdAll', 'updatedAt']
   filter(req.query, sortable, countAllCast,res,(filter, pageInfo)=>{
     getListCast(filter , (err, datas) => {
-      console.log(filter)
+      // console.log(filter)
       if(err){
-        console.log(err)
+        // console.log(err)
         return errorHandler(err, res)
       }
       return res.status(200).json({

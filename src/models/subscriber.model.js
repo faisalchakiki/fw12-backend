@@ -2,9 +2,16 @@ const db = require("../helpers/db.helper"); // import db
 
 //Menjalankan query
 // melihat semua Subscriber ---
-const getListSubscriber = (cb) => {
-  const sql = "SELECT * FROM subscriber";
-  return db.query(sql, cb);
+const countAllSubscriber = (filter, cb) => {
+  const sql = `SELECT COUNT("email") AS "totalData" FROM subscriber WHERE email LIKE $1`
+  const values = [`%${filter.search}%`]
+  return db.query(sql, values, cb)
+}
+
+const getListSubscriber = (filter,cb) => {
+  const sql = `SELECT * FROM subscriber WHERE email LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const values = [`%${filter.search}%`,filter.limit, filter.offset]
+  return db.query(sql,values,cb)
 };
 
 // melihat Subscriber berdasarkan id ---
@@ -23,11 +30,11 @@ const creatingSubscriber = (data, cb) => {
 
 // mengupdate data Subscriber---
 const updatingSubscriber = (data, id, cb) => {
-  const sql = `UPDATE subscriber SET "name" = COALESCE( $1, "name"),
+  const sql = `UPDATE subscriber SET "email" = COALESCE( $1, "email"),
   "updatedAt" = now()
   WHERE id = ${id} RETURNING *`;
   const values = [
-    data.name
+    data.email
   ];
   db.query(sql,values, cb)
 };
@@ -44,4 +51,5 @@ module.exports = {
   creatingSubscriber,
   updatingSubscriber,
   deletingSubscriber,
+  countAllSubscriber
 };

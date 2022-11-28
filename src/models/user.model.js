@@ -2,9 +2,16 @@ const db = require("../helpers/db.helper"); // import db
 
 //Menjalankan query
 // melihat semua users ---
-const getListUsers = (cb) => {
-  const sql = "SELECT * FROM users";
-  return db.query(sql, cb);
+const countAllUsers = (filter, cb) => {
+  const sql = `SELECT COUNT("id") AS "totalData" FROM users WHERE "firstName" LIKE $1`
+  const values = [`%${filter.search}%`]
+  return db.query(sql, values, cb)
+}
+
+const getListUsers = (filter, cb) => {
+  const sql = `SELECT * FROM users WHERE "firstName" LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const values = [`%${filter.search}%`,filter.limit, filter.offset]
+  return db.query(sql,values,cb)
 };
 
 // melihat user berdasarkan id ---
@@ -58,4 +65,5 @@ module.exports = {
   creatingUser,
   updatingUser,
   deletingUser,
+  countAllUsers
 };

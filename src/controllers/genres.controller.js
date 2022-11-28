@@ -1,4 +1,5 @@
-const errorHandler = require('../helpers/errorHandler.helper')
+const errorHandler = require('../helpers/errorHandler.helper');
+const filter = require('../helpers/filter.helper');
 const {
   //mengimport data dari models
   getListGenre,
@@ -6,21 +7,27 @@ const {
   creatingGenre,
   updatingGenre,
   deletingGenre,
+  countAllGenre,
 } = require("../models/genre.model");
 
 //menjalankan model
+
 exports.readAllGenre = (req, res) => {
-  getListGenre((err, datas) => {
-    if(err){
-      // console./log(err)
-      return errorHandler(err, res)
-    }
-    return res.status(200).json({
-      success: true,
-      message: "Success Fetch List",
-      data: datas.rows,
+  const sortable = ['name', 'createdAll', 'updatedAt']
+  filter(req.query, sortable, countAllGenre,res,(filter, pageInfo)=>{
+    getListGenre(filter,(err, datas) => {
+      if(err){
+        // console./log(err)
+        return errorHandler(err, res)
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Success Fetch List",
+        pageInfo,
+        data: datas.rows,
+      });
     });
-  });
+  })
 };
 
 exports.getGenre = (req, res) => {

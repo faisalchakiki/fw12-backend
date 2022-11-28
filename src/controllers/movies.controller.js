@@ -1,4 +1,5 @@
-const errorHandler = require('../helpers/errorHandler.helper')
+const errorHandler = require('../helpers/errorHandler.helper');
+const filter = require('../helpers/filter.helper');
 const {
   //mengimport data dari models
   getListMovie,
@@ -6,21 +7,26 @@ const {
   creatingMovie,
   updatingMovie,
   deletingMovie,
+  countAllMovie,
 } = require("../models/movie.model");
 
 //menjalankan model
 exports.readAllMovies = (req, res) => {
-  getListMovie((err, datas) => {
-    if(err){
-      // console./log(err)
-      return errorHandler(err, res)
-    }
-    return res.status(200).json({
-      success: true,
-      message: "Success Fetch List",
-      data: datas.rows,
+  const sortable = ['title', 'createdAll', 'updatedAt']
+  filter(req.query, sortable, countAllMovie,res,(filter, pageInfo)=>{
+    getListMovie(filter,(err, datas) => {
+      if(err){
+        // console./log(err)
+        return errorHandler(err, res)
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Success Fetch List",
+        pageInfo,
+        data: datas.rows,
+      });
     });
-  });
+  })
 };
 
 exports.getMovie = (req, res) => {

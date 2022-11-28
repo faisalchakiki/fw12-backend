@@ -2,9 +2,16 @@ const db = require("../helpers/db.helper"); // import db
 
 //Menjalankan query
 // melihat semua Times ---
-const getListTime = (cb) => {
-  const sql = "SELECT * FROM times";
-  return db.query(sql,cb)
+const countAllTime = (filter, cb) => {
+  const sql = `SELECT COUNT("time") AS "totalData" FROM times WHERE time LIKE $1`
+  const values = [`%${filter.search}%`]
+  return db.query(sql, values, cb)
+}
+
+const getListTime = (filter, cb) => {
+  const sql = `SELECT * FROM times WHERE time LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const values = [`%${filter.search}%`,filter.limit, filter.offset]
+  return db.query(sql,values,cb)
 };
 
 // melihat time berdasarkan id ---
@@ -43,4 +50,5 @@ module.exports = {
   creatingTime,
   updatingTime,
   deletingTime,
+  countAllTime
 };

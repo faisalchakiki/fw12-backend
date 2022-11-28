@@ -2,9 +2,16 @@ const db = require("../helpers/db.helper"); // import db
 
 //Menjalankan query
 // melihat semua forgotAccount ---
-const getListForgotAccount = (cb) => {
-  const sql = "SELECT * FROM forgot_accounts";
-  return db.query(sql,cb)
+const countAllForgotAccount = (filter, cb) => {
+  const sql = `SELECT COUNT("email") AS "totalData" FROM forgot_accounts WHERE email LIKE $1`
+  const values = [`%${filter.search}%`]
+  return db.query(sql, values, cb)
+}
+
+const getListForgotAccount = (filter,cb) => {
+  const sql = `SELECT * FROM forgot_accounts WHERE email LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const values = [`%${filter.search}%`,filter.limit, filter.offset]
+  return db.query(sql,values,cb)
 };
 
 // melihat ForgotAccount berdasarkan id ---
@@ -45,4 +52,5 @@ module.exports = {
   creatingForgotAccount,
   updatingForgotAccount,
   deletingForgotAccount,
+  countAllForgotAccount
 };

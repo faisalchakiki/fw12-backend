@@ -2,9 +2,16 @@ const db = require("../helpers/db.helper"); // import db
 
 //Menjalankan query
 // melihat semua movies ---
-const getListMovie = (cb) => {
-  const sql = "SELECT * FROM movies";
-  return db.query(sql,cb)
+const countAllMovie = (filter, cb) => {
+  const sql = `SELECT COUNT("title") AS "totalData" FROM movies WHERE title LIKE $1`
+  const values = [`%${filter.search}%`]
+  return db.query(sql, values, cb)
+}
+
+const getListMovie = (filter,cb) => {
+  const sql = `SELECT * FROM movies WHERE title LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const values = [`%${filter.search}%`,filter.limit, filter.offset]
+  return db.query(sql,values,cb)
 };
 
 // melihat movie berdasarkan id ---
@@ -53,4 +60,5 @@ module.exports = {
   creatingMovie,
   updatingMovie,
   deletingMovie,
+  countAllMovie
 };
