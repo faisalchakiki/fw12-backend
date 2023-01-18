@@ -54,7 +54,11 @@ exports.createUsers = (req, res) => {
   });
 };
 
-exports.updateUsers = (req, res) => {
+exports.updateUsersAvatar = (req, res) => {
+  if(req.file){
+    req.body.picture = req.file.filename;
+  }
+  console.log(req.body)
   updatingUser(req.body, req.param('id'), (err, result) => {
     if(err){
       console.log(err)
@@ -80,4 +84,18 @@ exports.deleteUsers = (req, res) => {
       results : result.rows[0] 
     })
   })
+};
+
+exports.updateUser = (req, res) => {
+  updatingUser(req.body, req.param('id'), (err, result) => {
+    if(err){
+      // console.log(err)
+      return errorHandler(err ,res)
+    }
+    return res.status(200).json({
+      success : true,
+      message : "Success Update User",
+      results: result.rows[0]
+    })
+  });
 };

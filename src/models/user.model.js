@@ -40,7 +40,8 @@ const updatingUser = (data, id, cb) => {
   "lastName" = COALESCE( $2, "lastName"),
   "phoneNumber" = COALESCE( $3, "phoneNumber"),
   "email" = COALESCE( $4, "email"),
-  "password" = COALESCE( $5, "password"),
+  "password" = COALESCE( $5 , "password"),
+  "avatar" = COALESCE( $6, "avatar"),
   "updatedAt" = now()
   WHERE id = ${id} RETURNING *`;
   const values = [
@@ -49,6 +50,7 @@ const updatingUser = (data, id, cb) => {
     data.phoneNumber,
     data.email,
     data.password,
+    data.picture
   ];
   db.query(sql, values, cb);
 };

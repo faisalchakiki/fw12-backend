@@ -3,9 +3,9 @@ const scheduleTimeRouter = require('express').Router()
 const { readAllScheduleTime, getScheduleTime, createScheduleTime, updateScheduleTime, deleteScheduleTime} = require('../controllers/scheduleTimes.controller')
 
 scheduleTimeRouter.get('/', readAllScheduleTime)
-scheduleTimeRouter.get('/get?', getScheduleTime)
+scheduleTimeRouter.get('/:id', getScheduleTime)
 scheduleTimeRouter.post('/', createScheduleTime)
-scheduleTimeRouter.patch('/?', updateScheduleTime)
-scheduleTimeRouter.delete('/?', deleteScheduleTime)
+scheduleTimeRouter.patch('/:id', updateScheduleTime)
+scheduleTimeRouter.delete('/:id', deleteScheduleTime)
 
 module.exports = scheduleTimeRouter;

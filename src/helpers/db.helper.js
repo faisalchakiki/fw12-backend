@@ -1,7 +1,7 @@
 const { Pool } = require("pg");
 
 const db = new Pool({
-  connectionString: "postgresql://postgres:1@localhost:5432/cinephile?schema=public"
+  connectionString: "postgresql://postgres:ju7aE9HgUVW!rkL@db.talutbkuxpigmbbmcoqm.supabase.co:5432/postgres"
   // user: "postgres",
   // host: "localhost",
   // database: "cinephile",

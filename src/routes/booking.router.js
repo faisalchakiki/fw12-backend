@@ -3,9 +3,9 @@ const bookingRouter = require('express').Router()
 const { readAllBooking, getBooking, createBooking, updateBooking, deleteBooking} = require('../controllers/bookings.controller')
 
 bookingRouter.get('/', readAllBooking)
-bookingRouter.get('/get?', getBooking)
+bookingRouter.get('/:id', getBooking)
 bookingRouter.post('/', createBooking)
-bookingRouter.patch('/?', updateBooking)
-bookingRouter.delete('/?', deleteBooking)
+bookingRouter.patch('/:id', updateBooking)
+bookingRouter.delete('/:id', deleteBooking)
 
 module.exports = bookingRouter;

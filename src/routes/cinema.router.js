@@ -3,9 +3,9 @@ const cinemaRouter = require('express').Router()
 const { readAllCinema, getCinema, createCinema, updateCinema, deleteCinema} = require('../controllers/cinemas.controller')
 
 cinemaRouter.get('/', readAllCinema)
-cinemaRouter.get('/get?', getCinema)
+cinemaRouter.get('/:id', getCinema)
 cinemaRouter.post('/', createCinema)
-cinemaRouter.patch('/?', updateCinema)
-cinemaRouter.delete('/?', deleteCinema)
+cinemaRouter.patch('/:id', updateCinema)
+cinemaRouter.delete('/:id', deleteCinema)
 
 module.exports = cinemaRouter;

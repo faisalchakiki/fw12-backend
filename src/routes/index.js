@@ -1,4 +1,3 @@
-const authMiddleware = require('../middleware/auth.middleware')
 const routes = require('express').Router()
 
 const userRoute = require('./user.router')
@@ -17,10 +16,11 @@ const scheduleTimeRoute = require('./scheduleTime.router')
 const statusBookingRoute = require('./statusBooking.router')
 const subscriberRoute = require('./subscriber.router')
 const authRoute = require('./auth.router')
+const profileRoute = require('./profile')
 
 
 routes.use('/users', userRoute)
-routes.use('/movies',authMiddleware, movieRoute)
+routes.use('/movies', movieRoute)
 routes.use('/genres', genreRoute)
 routes.use('/casts', castRoute)
 routes.use('/times', timeRoute)
@@ -35,5 +35,6 @@ routes.use('/scheduleTimes', scheduleTimeRoute)
 routes.use('/statusBookings', statusBookingRoute)
 routes.use('/subscribers', subscriberRoute)
 routes.use('/auth', authRoute)
+routes.use('/profile', profileRoute)
 
 module.exports = routes

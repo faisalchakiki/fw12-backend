@@ -14,9 +14,9 @@ const readingReservedSeat = (id, cb) => {
 };
 
 // membuat ReservedSeat / insert ReservedSeat ---
-const creatingReservedSeat = (data, cb) => {
+const creatingReservedSeat = (data,id, cb) => {
   const sql = 'INSERT INTO reserved_seats ("seatNum","idBooking") VALUES ($1,$2) RETURNING *'
-  const values = [data.seatNum, data.idBooking]
+  const values = [data,id]
   db.query(sql, values, cb);
 };
 

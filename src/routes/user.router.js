@@ -1,11 +1,14 @@
 const userRouter = require('express').Router()
+const multer = require('multer')
 
-const { listUsers, getUser, createUsers, updateUsers, deleteUsers} = require('../controllers/users.controller')
+const upload = multer({ dest : "uploads/" })
+
+const { listUsers, getUser, createUsers, deleteUsers, updateUsersAvatar} = require('../controllers/users.controller')
 
 userRouter.get('/', listUsers)
-userRouter.get('/get?', getUser)
+userRouter.get('/:id', getUser)
 userRouter.post('/', createUsers)
-userRouter.patch('/?', updateUsers)
-userRouter.delete('/?', deleteUsers)
+userRouter.patch('/:id', upload.single("picture"), updateUsersAvatar)
+userRouter.delete('/:id', deleteUsers)
 
 module.exports = userRouter;

@@ -8,16 +8,19 @@ const {
   updatingMovie,
   deletingMovie,
   countAllMovie,
+  listMovieWithGenre,
+  listUpcoming,
 } = require("../models/movie.model");
+// const { getListScheduleMovie } = require('../models/scheduleMovie.model');
 
 //menjalankan model
 exports.readAllMovies = (req, res) => {
   const sortable = ['title', 'createdAll', 'updatedAt']
-  console.log(req.userData)
+  // console.log(req.userData)
   filter(req.query, sortable, countAllMovie,res,(filter, pageInfo)=>{
     getListMovie(filter,(err, datas) => {
       if(err){
-        // console./log(err)
+        // console.log(err)
         return errorHandler(err, res)
       }
       return res.status(200).json({
@@ -85,3 +88,30 @@ exports.deleteMovie = (req, res) => {
     })
   });
 };
+
+exports.nowShowing = (req, res) => {
+  listMovieWithGenre((err, datas) =>{
+    console.log(err)
+    if(err){
+      return errorHandler(err ,res)
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Fetch List Movie Now Showing",
+      data: datas.rows,
+    });
+  })
+}
+
+exports.upComing = (req, res) => {
+  listUpcoming(req.query,(err, datas) =>{
+    if(err){
+      return errorHandler(err ,res)
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Fetch List Upcoming Movie",
+      data: datas.rows,
+    });
+  })
+}

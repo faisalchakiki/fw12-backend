@@ -20,10 +20,25 @@ const readingForgotAccount = (id, cb) => {
   return db.query(sql,cb)
 };
 
+// melihat ForgotAccount berdasarkan email ---
+const authForgotAccount = (email, cb) => {
+  const sql =`SELECT * FROM forgot_accounts WHERE email  = '${email}'`
+  return db.query(sql,cb)
+};
+
+const authResetPassword = (data,cb) => {
+  console.log(data)
+  const sql =`SELECT * FROM forgot_accounts WHERE email=$1 AND code=$2`
+  values = [data.email , data.code]
+  return db.query(sql,values,cb)
+};
+
+
 // membuat ForgotAccount / insert ForgotAccount ---
 const creatingForgotAccount = (data, cb) => {
-  const sql = 'INSERT INTO forgot_accounts ("email","code") VALUES ($1,$2) RETURNING *'
-  const values = [data.email, data.code]
+  console.log(data)
+  const sql = 'INSERT INTO forgot_accounts ("email","code","idUser") VALUES ($1,$2,$3) RETURNING *'
+  const values = [data.email, data.code, data.idUser]
   db.query(sql, values, cb);
 };
 
@@ -44,7 +59,7 @@ const updatingForgotAccount = (data, id, cb) => {
 const deletingForgotAccount = (id, cb) => {
   const sql = `DELETE FROM forgot_accounts WHERE id = ${id} RETURNING *`
   db.query(sql ,cb)
-};
+};  
 
 module.exports = {
   getListForgotAccount,
@@ -52,5 +67,7 @@ module.exports = {
   creatingForgotAccount,
   updatingForgotAccount,
   deletingForgotAccount,
-  countAllForgotAccount
+  countAllForgotAccount,
+  authForgotAccount,
+  authResetPassword
 };
