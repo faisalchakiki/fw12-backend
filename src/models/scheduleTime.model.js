@@ -9,7 +9,12 @@ const getListScheduleTime = (cb) => {
 
 // melihat ScheduleTime berdasarkan id ---
 const readingScheduleTime = (id, cb) => {
-  const sql =`SELECT * FROM schedule_time WHERE id  = ${id}`
+  const sql =`SELECT
+  sm.*,
+  array_agg(st.time, ',') AS times
+FROM schedule_movie sm
+  JOIN schedule_time st ON st."idSchedule" = sm."id"
+WHERE sm.id = ${id}`
   return db.query(sql,cb)
 };
 

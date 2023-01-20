@@ -36,3 +36,43 @@ exports.changePassword = (req, res) => {
     });
   });
 };
+
+exports.updateProfile = (req, res) => {
+  const authorization = req.headers.authorization;
+  const token = authorization.split(" ")[1];
+  const decoded = jwt.verify(token, "key-backend");
+  const { id } = decoded;
+  updatingUser(req.body, id, (err, result) => {
+    if (err) {
+      // console.log(err)
+      return errorHandler(err, res);
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Success Change Profile",
+      results: result.rows[0],
+    });
+  });
+};
+
+exports.updateProfileAvatar = (req, res) => {
+  const authorization = req.headers.authorization;
+  const token = authorization.split(" ")[1];
+  const decoded = jwt.verify(token, "key-backend");
+  const { id } = decoded;
+  if(req.file){
+    req.body.picture = req.file.filename;
+  }
+  updatingUser(req.body, id, (err, result) => {
+    console.log(result.rows[0])
+    if(err){
+      console.log(err)
+      return errorHandler(err ,res)
+    }
+    return res.status(200).json({
+      success : true,
+      message : "Success Upload Avatar",
+      results: result.rows[0]
+    })
+  });
+};

@@ -15,14 +15,14 @@ const getListForgotAccount = (filter,cb) => {
 };
 
 // melihat ForgotAccount berdasarkan id ---
-const readingForgotAccount = (id, cb) => {
-  const sql =`SELECT * FROM forgot_accounts WHERE id  = ${id}`
+const readingForgotAccount = (code, cb) => {
+  const sql =`SELECT * FROM forgot_accounts WHERE code  = ${code}`
   return db.query(sql,cb)
 };
 
 // melihat ForgotAccount berdasarkan email ---
-const authForgotAccount = (email, cb) => {
-  const sql =`SELECT * FROM forgot_accounts WHERE email  = '${email}'`
+const authForgotAccount = (code, cb) => {
+  const sql =`SELECT * FROM forgot_accounts WHERE code  = '${code}'`
   return db.query(sql,cb)
 };
 

@@ -9,7 +9,7 @@ const getListScheduleMovie = (cb) => {
 
 // melihat ScheduleMovie berdasarkan id ---
 const readingScheduleMovie = (id, cb) => {
-  const sql =`SELECT * FROM schedule_movie WHERE id  = ${id}`
+  const sql =`SELECT * FROM schedule_movie WHERE idMovie  = ${id}`
   return db.query(sql,cb)
 };
 

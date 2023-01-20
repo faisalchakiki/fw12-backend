@@ -24,7 +24,11 @@ exports.readAllScheduleTime = (req, res) => {
 };
 
 exports.getScheduleTime = (req, res) => {
-  readingScheduleTime(req.param('id'), (err, result) => {
+  const authorization = req.headers.authorization;
+  const token = authorization.split(" ")[1];
+  const decoded = jwt.verify(token, "key-backend");
+  const { id } = decoded;
+  readingScheduleTime(id, (err, result) => {
     if (err) {
       // console.log(err)
       return errorHandler(err, res)

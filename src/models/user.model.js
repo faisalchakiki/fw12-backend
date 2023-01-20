@@ -50,9 +50,20 @@ const updatingUser = (data, id, cb) => {
     data.phoneNumber,
     data.email,
     data.password,
-    data.picture
+    data.picture,
   ];
   db.query(sql, values, cb);
+};
+
+const updatingUserReset = (password, email, cb) => {
+  console.log(email);
+  console.log(password);
+  const sql = `UPDATE users SET
+  "password" = COALESCE( $1 , "password"),
+  "updatedAt" = now()
+  WHERE email = $2 RETURNING *`;
+  const values = [password ,email]
+  db.query(sql,values, cb);
 };
 
 //mendelete user---
@@ -64,8 +75,8 @@ const deletingUser = (id, cb) => {
 //mengecek email di user
 const authEmailUser = (data, cb) => {
   const sql = `SELECT * FROM users WHERE email = $1`;
-  const values = [data.email]
-  return db.query(sql,values, cb);
+  const values = [data.email];
+  return db.query(sql, values, cb);
 };
 
 module.exports = {
@@ -76,4 +87,5 @@ module.exports = {
   deletingUser,
   countAllUsers,
   authEmailUser,
+  updatingUserReset,
 };

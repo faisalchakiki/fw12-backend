@@ -30,9 +30,9 @@ exports.readAllForgotAccount = (req, res) => {
 };
 
 exports.getForgotAccount = (req, res) => {
-  readingForgotAccount(req.param('id'), (err, result) => {
+  readingForgotAccount(req.param('email'), (err, result) => {
     if (err) {
-      // console.log(err)
+      console.log(err)
       return errorHandler(err, res)
       }
     return res.status(200).json({

@@ -17,7 +17,6 @@ const getListMovie = (filter, cb) => {
   return db.query(sql, values, cb);
 };
 
-
 // membuat movie / insert movie ---
 const creatingMovie = (data, cb) => {
   const sql =
@@ -61,17 +60,19 @@ const deletingMovie = (id, cb) => {
 };
 
 const listMovieWithGenre = (cb) => {
-  const sql = `SELECT
+  const sql = `SELECT DISTINCT
   m.*,
   sm."dateStart",
   sm."dateEnd",
-  string_agg(g.name,',') AS genre
+  string_agg(g.name, ',') AS genre
 FROM movies m
   JOIN schedule_movie sm ON sm."idMovies" = m."id"
   LEFT JOIN movie_genre mg ON mg."idMovie" = m."id"
   LEFT JOIN genres g ON g.id = mg."idGenre"
-  WHERE current_date BETWEEN sm."dateStart" AND sm."dateEnd" 
-  GROUP BY m."id", sm."id"`;
+WHERE
+  current_date BETWEEN sm."dateStart"
+  AND sm."dateEnd"
+GROUP BY m."id", sm."id"`;
   db.query(sql, cb);
 };
 
