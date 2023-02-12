@@ -1,4 +1,4 @@
-const errorHandler = require('../helpers/errorHandler.helper')
+const errorHandler = require("../helpers/errorHandler.helper");
 const {
   //mengimport data dari models
   getListScheduleMovie,
@@ -6,14 +6,17 @@ const {
   creatingScheduleMovie,
   updatingScheduleMovie,
   deletingScheduleMovie,
+  infoSchedule,
+  citySchedule,
+  getPaymentMethod,
 } = require("../models/scheduleMovie.model");
 
 //menjalankan model
 exports.readAllScheduleMovie = (req, res) => {
   getListScheduleMovie((err, datas) => {
-    if(err){
+    if (err) {
       // console./log(err)
-      return errorHandler(err, res)
+      return errorHandler(err, res);
     }
     return res.status(200).json({
       success: true,
@@ -24,24 +27,24 @@ exports.readAllScheduleMovie = (req, res) => {
 };
 
 exports.getScheduleMovie = (req, res) => {
-  readingScheduleMovie(req.param('id'), (err, result) => {
+  readingScheduleMovie(req.param("id"), (err, result) => {
     if (err) {
       // console.log(err)
-      return errorHandler(err, res)
-      }
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
-      message: "Success Get ScheduleMovie",
-      data: result.rows
-    })
-  })
-}
+      message: "Success Get Schedule Movie",
+      data: result.rows,
+    });
+  });
+};
 
 exports.createScheduleMovie = (req, res) => {
-  creatingScheduleMovie(req.body ,(err, result) => {
+  creatingScheduleMovie(req.body, (err, result) => {
     if (err) {
-    // console.log(err)
-    return errorHandler(err, res) 
+      // console.log(err)
+      return errorHandler(err, res);
     }
     return res.status(200).json({
       success: true,
@@ -52,29 +55,71 @@ exports.createScheduleMovie = (req, res) => {
 };
 
 exports.updateScheduleMovie = (req, res) => {
-  updatingScheduleMovie(req.body, req.param('id'), (err, result) => {
-    if(err){
+  updatingScheduleMovie(req.body, req.param("id"), (err, result) => {
+    if (err) {
       // console.log(err)
-      return errorHandler(err ,res)
+      return errorHandler(err, res);
     }
     return res.status(200).json({
-      success : true,
-      message : "Success Update ScheduleMovie",
-      results: result.rows[0]
-    })
+      success: true,
+      message: "Success Update ScheduleMovie",
+      results: result.rows[0],
+    });
   });
 };
 
 exports.deleteScheduleMovie = (req, res) => {
-  deletingScheduleMovie(req.param("id"), (err, result)=>{
-    if(err){
+  deletingScheduleMovie(req.param("id"), (err, result) => {
+    if (err) {
       // console.log(result)
-      return errorHandler(err , res)
+      return errorHandler(err, res);
     }
     return res.status(200).json({
-      success : true,
-      message : "Delete ScheduleMovie Success",
-      results : result.rows[0] 
-    })
+      success: true,
+      message: "Delete ScheduleMovie Success",
+      results: result.rows[0],
+    });
+  });
+};
+
+exports.getInfoSchedule = (req, res) => {
+  infoSchedule(req.param("id"), (err, result) => {
+    if (err) {
+      // console.log(err)
+      return errorHandler(err, res);
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Success Get Schedule Movie",
+      data: result.rows,
+    });
+  });
+};
+
+exports.getCitySchedule = (req, res) => {
+  citySchedule(req.param("id"), (err, result) => {
+    if (err) {
+      // console.log(err)
+      return errorHandler(err, res);
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Success Get City Schedule",
+      data: result.rows,
+    });
+  });
+};
+
+exports.showAllPaymentMethod = (req, res) => {
+  getPaymentMethod((err, datas) => {
+    if (err) {
+      console.log(err)
+      return errorHandler(err, res);
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Success Fetch List",
+      data: datas.rows,
+    });
   });
 };

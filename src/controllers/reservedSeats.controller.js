@@ -40,7 +40,6 @@ exports.getReservedSeat = (req, res) => {
 exports.createReservedSeat = (req, res) => {
   creatingReservedSeat(req.body ,(err, result) => {
     if (err) {
-    // console.log(err)
     return errorHandler(err, res) 
     }
     return res.status(200).json({

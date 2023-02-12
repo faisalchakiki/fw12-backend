@@ -42,6 +42,7 @@ exports.updateProfile = (req, res) => {
   const token = authorization.split(" ")[1];
   const decoded = jwt.verify(token, "key-backend");
   const { id } = decoded;
+  console.log(id);
   updatingUser(req.body, id, (err, result) => {
     if (err) {
       // console.log(err)
@@ -60,19 +61,19 @@ exports.updateProfileAvatar = (req, res) => {
   const token = authorization.split(" ")[1];
   const decoded = jwt.verify(token, "key-backend");
   const { id } = decoded;
-  if(req.file){
-    req.body.picture = req.file.filename;
+  if (req.file) {
+    console.log(req.file);
+    req.body.picture = req.file.path;
+    updatingUser(req.body, id, (err, result) => {
+      if (err) {
+        console.log(err);
+        return errorHandler(err, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Success Upload Avatar",
+        results: result.rows[0],
+      });
+    });
   }
-  updatingUser(req.body, id, (err, result) => {
-    console.log(result.rows[0])
-    if(err){
-      console.log(err)
-      return errorHandler(err ,res)
-    }
-    return res.status(200).json({
-      success : true,
-      message : "Success Upload Avatar",
-      results: result.rows[0]
-    })
-  });
 };

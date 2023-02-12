@@ -72,7 +72,7 @@ FROM movies m
 WHERE
   current_date BETWEEN sm."dateStart"
   AND sm."dateEnd"
-GROUP BY m."id", sm."id"`;
+  GROUP BY m."id", m."title", sm."idMovies", sm."dateStart", sm."dateEnd",sm."id"`;
   db.query(sql, cb);
 };
 
