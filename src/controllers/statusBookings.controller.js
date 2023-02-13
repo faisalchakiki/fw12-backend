@@ -6,7 +6,7 @@ const {
   creatingStatusBooking,
   updatingStatusBooking,
   deletingStatusBooking,
-} = require("../models/StatusBooking.model");
+} = require("../models/statusBooking.model");
 
 //menjalankan model
 exports.readAllStatusBooking = (req, res) => {
