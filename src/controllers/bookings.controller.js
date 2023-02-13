@@ -14,7 +14,6 @@ const {
   seatsTicket,
 } = require("../models/booking.model");
 const { creatingReservedSeat } = require("../models/reservedSeat.model");
-const createTransaction = require("../models/transaction.model");
 
 //menjalankan model
 exports.readAllBooking = (req, res) => {
