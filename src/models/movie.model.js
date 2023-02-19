@@ -9,6 +9,7 @@ const countAllMovie = (filter, cb) => {
 };
 
 const getListMovie = (filter, cb) => {
+  // console.log(filter)
   const sql = `SELECT m.* , string_agg(g.name,',') AS genre FROM movies m
   LEFT JOIN movie_genre mg ON mg."idMovie" = m."id"
   LEFT JOIN genres g ON g.id = mg."idGenre" 

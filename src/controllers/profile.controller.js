@@ -1,3 +1,4 @@
+const argon = require("argon2");
 const jwt = require("jsonwebtoken");
 const errorHandler = require("../helpers/errorHandler.helper");
 const { readingUser, updatingUser } = require("../models/user.model");
@@ -19,11 +20,12 @@ exports.userProfile = (req, res) => {
   });
 };
 
-exports.changePassword = (req, res) => {
+exports.changePassword = async (req, res) => {
   const authorization = req.headers.authorization;
   const token = authorization.split(" ")[1];
   const decoded = jwt.verify(token, "key-backend");
   const { id } = decoded;
+  req.body.password = await argon.hash(req.body.password);
   updatingUser(req.body, id, (err, result) => {
     if (err) {
       // console.log(err)

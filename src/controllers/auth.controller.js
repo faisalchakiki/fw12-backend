@@ -1,3 +1,4 @@
+const argon = require("argon2");
 const jwt = require("jsonwebtoken");
 const {
   creatingForgotAccount,
@@ -11,12 +12,14 @@ const {
 } = require("../models/user.model");
 const errorHandler = require("../helpers/errorHandler.helper");
 
+const { transport, mailOptions } = require("../helpers/mail.helper");
+
 exports.login = (req, res) => {
-  authEmailUser(req.body, (err, result) => {
+  authEmailUser(req.body, async (err, result) => {
     // console.log(req.body);
     if (result.rows.length) {
       const user = result.rows[0];
-      if (user.password === req.body.password) {
+      if (await argon.verify(user.password, req.body.password)) {
         const token = jwt.sign({ id: user.id }, "key-backend");
         return res.status(200).json({
           success: true,
@@ -35,8 +38,8 @@ exports.login = (req, res) => {
   });
 };
 
-exports.register = (req, res) => {
-  // console.log(req.body);
+exports.register = async (req, res) => {
+  req.body.password = await argon.hash(req.body.password);
   creatingUser(req.body, (err, result) => {
     if (err) {
       console.log(err);
@@ -54,49 +57,64 @@ exports.register = (req, res) => {
 };
 
 exports.forgotAccount = (req, res) => {
-  authEmailUser(req.body, (err, result) => {
-    console.log(result);
-    if (result.rows.length) {
-      const [user] = result.rows;
-      // console.log(user)
-      const data = {
-        email: user.email,
-        idUser: user.id,
-        code: Math.ceil(Math.random() * 90000),
-      };
-      creatingForgotAccount(data, (req, data) => {
-        return res.status(200).json({
-          success: true,
-          message: "Reset Password has been requested",
+  try {
+    authEmailUser(req.body, (err, result) => {
+      if (result.rows.length) {
+        const [user] = result.rows;
+        // console.log(user)
+        const code = Math.ceil(Math.random() * 90000);
+        const data = {
+          email: user.email,
+          idUser: user.id,
+          code,
+        };
+        transport.sendMail(mailOptions(user.email, code));
+        creatingForgotAccount(data, (req, data) => {
+          return res.status(200).json({
+            success: true,
+            message: "Reset Password has been requested",
+          });
         });
-      });
-    } else {
-      return res.status(400).json({
-        success: false,
-        message: "forgot account fail",
-      });
-    }
-  });
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: "forgot account fail",
+        });
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 exports.resetPassword = (req, res) => {
-  const { password, confirmPassword, code } = req.body;
-  authForgotAccount(code, (err, result) => {
-    const user = result.rows[0];
-    // console.log(user);
-    if (password === confirmPassword) {
-      updatingUserReset(password, user.email, (err, result) => {
-        // console.log(result);
-        if (err) {
-          console.log(err);
-          return errorHandler(err, res);
+  let { password, confirmPassword, code } = req.body;
+  try {
+    authForgotAccount(code, async (err, result) => {
+      const user = result.rows[0];
+      // console.log(user);
+      if (password === confirmPassword) {
+        try {
+          password = await argon.hash(password);
+          updatingUserReset(password, user.email, (err, result) => {
+            // console.log(result);
+            if (err) {
+              console.log(err);
+              return errorHandler(err, res);
+            }
+            return res.status(200).json({
+              success: true,
+              message: "Success Change Password",
+              results: result.rows[0],
+            });
+          });
+        } catch (err) {
+          console.log("failed");
+          return false;
         }
-        return res.status(200).json({
-          success: true,
-          message: "Success Change Password",
-          results: result.rows[0],
-        });
-      });
-    }
-  });
+      }
+    });
+  } catch (err) {
+    console.log("Code not match");
+  }
 };

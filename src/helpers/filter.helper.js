@@ -1,6 +1,7 @@
 const errorHandler = require("./errorHandler.helper")
 
 const filter = (data,sortable,countModel,res,cb ) => {
+  // console.log(data)
   data.page = parseInt(data.page) || 1
   data.limit = parseInt(data.limit) || 5
   data.search = data.search || ''
