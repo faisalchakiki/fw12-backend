@@ -58,7 +58,7 @@ exports.register = async (req, res) => {
 
 exports.forgotAccount = (req, res) => {
   try {
-    authEmailUser(req.body, (err, result) => {
+    authEmailUser(req.body, async (err, result) => {
       if (result.rows.length) {
         const [user] = result.rows;
         // console.log(user)
@@ -68,7 +68,7 @@ exports.forgotAccount = (req, res) => {
           idUser: user.id,
           code,
         };
-        transport.sendMail(mailOptions(user.email, code));
+        await transport.sendMail(mailOptions(user.email, code));
         creatingForgotAccount(data, (req, data) => {
           return res.status(200).json({
             success: true,
@@ -109,8 +109,10 @@ exports.resetPassword = (req, res) => {
             });
           });
         } catch (err) {
-          console.log("failed");
-          return false;
+          return res.status(400).json({
+            success: false,
+            message: "Code is false",
+          });
         }
       }
     });
