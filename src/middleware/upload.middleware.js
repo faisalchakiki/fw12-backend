@@ -4,10 +4,6 @@ const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const path = require("path");
 require("dotenv").config();
 
-console.log(process.env.CLOUD_NAME);
-console.log(process.env.API_KEY);
-console.log(process.env.API_SECRET_CLOUD);
-
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
@@ -33,7 +29,6 @@ const upload = multer({
   storage,
   limits: { fileSize: 5000000 }, //5MB
   fileFilter: (req, file, cb) => {
-    console.log("Filter");
     if (
       file.mimetype === "image/jpeg" ||
       file.mimetype === "image/png" ||
@@ -47,7 +42,6 @@ const upload = multer({
 });
 
 const uploadMiddleware = async (req, res, next) => {
-  console.log("uploadmiddleware");
   const uploadImage = await upload.single("picture");
   await uploadImage(req, res, (err) => {
     if (err) {
