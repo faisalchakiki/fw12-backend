@@ -43,16 +43,19 @@ const limits = {
   fileSize: 1024 * 1024 * 3,
 };
 
-const uploadImage = multer({
+const upload = multer({
   storage,
   limits,
   fileFilter,
-}).single("picture");
+});
+
 
 const uploadMiddleware = async (req, res, next) => {
-  console.log('uploadmiddleware')
+  console.log("uploadmiddleware");
+  const uploadImage = await upload.single("picture");
   await uploadImage(req, res, (err) => {
     if (err) {
+      console.log(err)
       return res.status(400).json({
         success: false,
         message: error.message,
