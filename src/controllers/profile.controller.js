@@ -64,7 +64,7 @@ exports.updateProfileAvatar = (req, res) => {
   const decoded = jwt.verify(token, "key-backend");
   const { id } = decoded;
   if (req.file) {
-    // console.log("req.file");
+    console.log("req.file");
     req.body.picture = req.file.path;
     updatingUser(req.body, id, (err, result) => {
       if (err) {
