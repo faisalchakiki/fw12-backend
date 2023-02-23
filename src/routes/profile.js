@@ -6,11 +6,11 @@ const {
   updateProfileAvatar,
 } = require("../controllers/profile.controller");
 
-const middleUpload = require("../middleware/upload.middleware");
+const {uploadMiddleware} = require('../middleware/upload.middleware')
 
 profileRoute.get("/", userProfile);
 profileRoute.patch("/", updateProfile);
 profileRoute.patch("/password", changePassword);
-profileRoute.patch("/upload", middleUpload, updateProfileAvatar);
+profileRoute.patch("/upload", uploadMiddleware, updateProfileAvatar);
 
 module.exports = profileRoute;

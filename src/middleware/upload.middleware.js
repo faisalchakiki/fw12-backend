@@ -16,17 +16,17 @@ const storage = new CloudinaryStorage({
     folder: "cinephile-image",
     format: async (req, file) => path.extname(file.originalname).slice("1"), // supports promises as well
     public_id: (req, file) => {
-      console.log("tes at middleware");
+      console.log("tes at storage");
       const randomNumber = Math.round(Math.random() * 9000);
       const filename = `${randomNumber}${Date.now()}`;
-      console.log(filename)
+      console.log(filename);
       return filename;
     },
   },
 });
-console.log(storage)
+
 const fileFilter = (req, file, cb) => {
-  console.log(file);
+  console.log("Filter");
   if (
     file.mimetype === "image/jpeg" ||
     file.mimetype === "image/png" ||
@@ -49,13 +49,17 @@ const uploadImage = multer({
   fileFilter,
 }).single("picture");
 
-module.exports = async (req, res, next) => {
-  console.log(req, res)
+const uploadMiddleware = async (req, res, next) => {
+  console.log('uploadmiddleware')
   await uploadImage(req, res, (err) => {
     if (err) {
-      console.log(err);
-      return errorHandler(err, res);
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+      });
     }
     next();
   });
 };
+
+module.exports = { uploadMiddleware, cloudinary };
