@@ -6,7 +6,7 @@ const {
   updateProfileAvatar,
 } = require("../controllers/profile.controller");
 
-const middleUpload = require('../middleware/upload.middleware');
+const middleUpload = require("../middleware/upload.middleware");
 
 profileRoute.get("/", userProfile);
 profileRoute.patch("/", updateProfile);

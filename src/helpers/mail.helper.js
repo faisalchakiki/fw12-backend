@@ -13,7 +13,11 @@ const myOAuth2Client = new OAuth2(
 myOAuth2Client.setCredentials({
   refresh_token: process.env.REFRESH_TOKEN,
 });
-const myAccessToken = myOAuth2Client.getAccessToken();
+
+const myAccessToken = async () => {
+  const myAccessToken = await myOAuth2Client.getAccessToken();
+  return myAccessToken.token
+}
 
 const transport = nodemailer.createTransport({
   service: "gmail",
@@ -23,7 +27,7 @@ const transport = nodemailer.createTransport({
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     refreshToken: process.env.REFRESH_TOKEN,
-    accessToken: myAccessToken, // access token variable we defined earlier
+    accessToken: myAccessToken(), // access token variable we defined earlier
   },
 });
 

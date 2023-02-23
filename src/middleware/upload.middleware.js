@@ -16,7 +16,7 @@ const storage = new CloudinaryStorage({
     folder: "cinephile-image",
     format: async (req, file) => path.extname(file.originalname).slice("1"), // supports promises as well
     public_id: (req, file) => {
-      console.log(file)
+      // console.log("tes at middleware");
       const randomNumber = Math.round(Math.random() * 9000);
       const filename = `${randomNumber}${Date.now()}`;
       return filename;
@@ -26,33 +26,32 @@ const storage = new CloudinaryStorage({
 
 const fileFilter = (req, file, cb) => {
   if (
-    file.mimetype === 'image/jpeg' ||
-    file.mimetype === 'image/png' ||
-    file.mimetype === 'image/jpg'
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg"
   ) {
-    cb(null, true)
+    cb(null, true);
   } else {
-    cb(null, false)
+    cb(null, false);
   }
-}
+};
 
 const limits = {
   // 3MB
-  fileSize: 1024 * 1024 * 3
-}
+  fileSize: 1024 * 1024 * 3,
+};
 
 const uploadImage = multer({
   storage,
   limits,
-  fileFilter
-}).single('picture')
-
+  fileFilter,
+}).single("picture");
 
 module.exports = (req, res, next) => {
   uploadImage(req, res, (err) => {
     if (err) {
-      return errorHandling(err, res)
+      return errorHandling(err, res);
     }
-    next()
-  })
+    next();
+  });
 };
