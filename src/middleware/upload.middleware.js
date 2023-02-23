@@ -47,9 +47,10 @@ const uploadImage = multer({
   fileFilter,
 }).single("picture");
 
-module.exports = (req, res, next) => {
-  uploadImage(req, res, (err) => {
+module.exports = async (req, res, next) => {
+  await uploadImage(req, res, (err) => {
     if (err) {
+      console.log(err)
       return errorHandler(err, res);
     }
     next();
