@@ -3,7 +3,9 @@ const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const path = require("path");
 require("dotenv").config();
-
+console.log(process.env.CLOUD_NAME);
+console.log(process.env.API_KEY);
+console.log(process.env.API_SECRET_CLOUD);
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
@@ -49,13 +51,12 @@ const upload = multer({
   fileFilter,
 });
 
-
 const uploadMiddleware = async (req, res, next) => {
   console.log("uploadmiddleware");
   const uploadImage = await upload.single("picture");
   await uploadImage(req, res, (err) => {
     if (err) {
-      console.log(err)
+      console.log(err);
       return res.status(400).json({
         success: false,
         message: error.message,
