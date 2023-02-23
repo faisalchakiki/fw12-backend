@@ -4,10 +4,6 @@ const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const path = require("path");
 require("dotenv").config();
 
-console.log(process.env.CLOUD_NAME)
-console.log(process.env.API_KEY)
-console.log(process.env.API_SECRET_CLOUD)
-
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
@@ -20,7 +16,7 @@ const storage = new CloudinaryStorage({
     folder: "cinephile-image",
     format: async (req, file) => path.extname(file.originalname).slice("1"), // supports promises as well
     public_id: (req, file) => {
-      // console.log("tes at middleware");
+      console.log("tes at middleware");
       const randomNumber = Math.round(Math.random() * 9000);
       const filename = `${randomNumber}${Date.now()}`;
       return filename;
@@ -54,7 +50,7 @@ const uploadImage = multer({
 module.exports = (req, res, next) => {
   uploadImage(req, res, (err) => {
     if (err) {
-      return errorHandling(err, res);
+      return errorHandler(err, res);
     }
     next();
   });
