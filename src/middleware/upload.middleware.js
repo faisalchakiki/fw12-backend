@@ -19,12 +19,14 @@ const storage = new CloudinaryStorage({
       console.log("tes at middleware");
       const randomNumber = Math.round(Math.random() * 9000);
       const filename = `${randomNumber}${Date.now()}`;
+      console.log(filename)
       return filename;
     },
   },
 });
-
+console.log(storage)
 const fileFilter = (req, file, cb) => {
+  console.log(file);
   if (
     file.mimetype === "image/jpeg" ||
     file.mimetype === "image/png" ||
@@ -48,9 +50,10 @@ const uploadImage = multer({
 }).single("picture");
 
 module.exports = async (req, res, next) => {
+  console.log(req, res)
   await uploadImage(req, res, (err) => {
     if (err) {
-      console.log(err)
+      console.log(err);
       return errorHandler(err, res);
     }
     next();
