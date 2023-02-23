@@ -3,9 +3,11 @@ const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const path = require("path");
 require("dotenv").config();
+
 console.log(process.env.CLOUD_NAME);
 console.log(process.env.API_KEY);
 console.log(process.env.API_SECRET_CLOUD);
+
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
@@ -27,28 +29,21 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const fileFilter = (req, file, cb) => {
-  console.log("Filter");
-  if (
-    file.mimetype === "image/jpeg" ||
-    file.mimetype === "image/png" ||
-    file.mimetype === "image/jpg"
-  ) {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-
-const limits = {
-  // 3MB
-  fileSize: 1024 * 1024 * 3,
-};
-
 const upload = multer({
   storage,
-  limits,
-  fileFilter,
+  limits: { fileSize: 5000000 }, //5MB
+  fileFilter: (req, file, cb) => {
+    console.log("Filter");
+    if (
+      file.mimetype === "image/jpeg" ||
+      file.mimetype === "image/png" ||
+      file.mimetype === "image/jpg"
+    ) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+    }
+  },
 });
 
 const uploadMiddleware = async (req, res, next) => {
