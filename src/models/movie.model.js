@@ -13,7 +13,7 @@ const getListMovie = (filter, cb) => {
   const sql = `SELECT m.* , string_agg(g.name,',') AS genre FROM movies m
   LEFT JOIN movie_genre mg ON mg."idMovie" = m."id"
   LEFT JOIN genres g ON g.id = mg."idGenre" 
-  WHERE title LIKE $1 GROUP BY m."id" ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3 `;
+  WHERE m.title LIKE $1 GROUP BY m."id" ORDER BY title ${filter.sort} LIMIT $2 OFFSET $3`;
   const values = [`%${filter.search}%`, filter.limit, filter.offset];
   return db.query(sql, values, cb);
 };
