@@ -16,14 +16,14 @@ myOAuth2Client.setCredentials({
 
 const myAccessToken = async () => {
   const myAccessToken = await myOAuth2Client.getAccessToken();
-  return myAccessToken.token
-}
+  return myAccessToken.token;
+};
 
 const transport = nodemailer.createTransport({
   service: "gmail",
   auth: {
     type: "OAuth2",
-    user: "faisalchakiki012018@gmail.com", //your gmail account you used to set the project up in google cloud console"
+    user: "faisalchakiki99@gmail.com", //your gmail account you used to set the project up in google cloud console"
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     refreshToken: process.env.REFRESH_TOKEN,
@@ -33,7 +33,7 @@ const transport = nodemailer.createTransport({
 
 const mailOptions = (sendTo, code) => {
   return {
-    from: "faisalchakiki012018@gmail.com", // sender
+    from: "faisalchakiki99@gmail.com", // sender
     to: sendTo, // receiver
     subject: "Authentication Code Reset Password Cinephile", // Subject
     html: `<p>Here is your reset password code <b>${code}</b></p>`, // html body

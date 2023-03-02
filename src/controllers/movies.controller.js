@@ -89,6 +89,7 @@ exports.deleteMovie = (req, res) => {
 };
 
 exports.nowShowing = (req, res) => {
+  console.log('nowShowing')
   listMovieWithGenre((err, datas) => {
     console.log(err);
     if (err) {
