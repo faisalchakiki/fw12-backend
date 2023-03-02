@@ -12,7 +12,7 @@ const {
 } = require("../models/user.model");
 const errorHandler = require("../helpers/errorHandler.helper");
 
-const { transport, mailOptions } = require("../helpers/mail.helper");
+const { transport } = require("../helpers/mail.helper");
 
 exports.login = (req, res) => {
   authEmailUser(req.body, async (err, result) => {
@@ -68,7 +68,23 @@ exports.forgotAccount = (req, res) => {
           idUser: user.id,
           code,
         };
-        await transport.sendMail(mailOptions(user.email, code));
+        const mailOptions = {
+          from: "faisalchakiki99@gmail.com", // sender
+          to: user.email, // receiver
+          subject: "Authentication Code Reset Password Cinephile", // Subject
+          html: `<p>Here is your reset password code <b>${code}</b></p>`, // html body
+        };
+        const sendMail = async () => {
+          try {
+            const mailer = await transport();
+            await mailer.sendMail(mailOptions);
+            console.log("Email terkirim!");
+          } catch (err) {
+            console.log(err);
+            console.log("Gagal!");
+          }
+        };
+        sendMail()
         creatingForgotAccount(data, (req, data) => {
           return res.status(200).json({
             success: true,
